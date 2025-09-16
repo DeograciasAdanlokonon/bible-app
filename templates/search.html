@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow-sm p-4">
+  <h2 class="mb-3 text-center">Bible Search</h2>
+  <form method="get" action="{{ url_for('search') }}" class="d-flex mb-3">
+    <input type="hidden" id="hidden_lang" name="hidden_lang" value="en">
+    <input type="text" name="query" class="form-control me-2" placeholder="Search (e.g. John 3:16, faith, Peter)" required>
+    <button type="submit" class="btn btn-success">Search</button>
+  </form>
+
+  {% if results %}
+  <div class="list-group">
+    {% for item in results %}
+    <div class="list-group-item">
+      <strong>{{ item.ref }}</strong><br>
+      <a href="{{ url_for('audio', ref=item.ref, text=item.text) }}" class="text-body text-decoration-none">
+        {{ item.text }}
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  {% elif query %}
+  <p class="text-muted">No results found for "{{ query }}"</p>
+  {% endif %}
+</div>
+{% endblock %}
