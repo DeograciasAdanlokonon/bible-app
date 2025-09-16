@@ -11,6 +11,7 @@ dominate==2.9.1
 elevenlabs==2.15.0
 Flask==3.1.2
 Flask-Bootstrap==3.3.7.1
+git-ignore==1.0.2
 h11==0.16.0
 httpcore==1.0.9
 httpx==0.28.1
