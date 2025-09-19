@@ -2,6 +2,7 @@ from dotenv import load_dotenv
 from elevenlabs.client import ElevenLabs
 from elevenlabs.play import play # Can also play the audio - follow Elevenlabs Doc
 import os
+import base64
 
 load_dotenv()
 
@@ -25,15 +26,8 @@ class Speech:
 
       # Collect chunks into a single bytes object
       audio_bytes = b"".join(self.audio)
+      # encode to base64
+      encoded_audio = base64.b64encode(audio_bytes).decode("utf-8")
 
-      # Get the current directory of speech.py
-      base_dir = os.path.dirname(__file__)
-
-      try:
-        # Save the audio to file
-        filename = os.path.join(base_dir, "output.mp3")
-        with open(filename, "wb") as f:
-            f.write(audio_bytes)
-      except Exception as e:
-          raise (f"Error occured: {e}")
+      return encoded_audio
 

@@ -7,7 +7,7 @@
     <footer class="blockquote-footer mt-2">{{ verse_ref }}</footer>
     <!-- Audio player -->
     <audio controls class="w-100 my-3">
-      <source src="{{ url_for('speech', filename='output.mp3') }}" type="audio/mpeg">
+      <source src="{{ audio_data }}" type="audio/mp3">
       Your browser does not support the audio element.
     </audio>
   </blockquote>

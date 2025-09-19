@@ -31,11 +31,11 @@ def home():
 
     # ToDo: Run the speech object
     speech = Speech(text=verse_text)
-    speech.save_audio()
+    audio_data = speech.save_audio()
   else:
     flash(bible.message, "warning")
 
-  return render_template('home.html', verse_text=verse_text, verse_ref=verse_reference, lang=lang)
+  return render_template('home.html', verse_text=verse_text, verse_ref=verse_reference, lang=lang, audio_data=f"data:audio/mp3;base64,{audio_data}")
 
 
 @app.route('/search', methods=['GET'])
@@ -55,22 +55,16 @@ def search():
 @app.route('/audio/<ref>/<text>')
 def audio(ref, text):
   try:
-    # ToDo: Run the speech object
-    delete_audio()   
+    # ToDo: Run the speech object  
     speech = Speech(text=text)
-    speech.save_audio()
+    audio_data = speech.save_audio()
     
-    return render_template('audio.html', ref=ref, text=text)
+    return render_template('audio.html', ref=ref, text=text, audio_data=f"data:audio/mp3;base64,{audio_data}")
   except Exception as e:
     flash("Sorry, Text to Speech failed!", "warning")
     redirect(url_for('search'))
 
-  return render_template('audio.html')
-
-@app.route('/speech/<filename>')
-def speech(filename):
-    """Send the audio to the browser"""
-    return send_from_directory('speech', filename)
+  return render_template('audio.html', )
 
 if __name__ == "__main__":
   app.run(debug=True)
