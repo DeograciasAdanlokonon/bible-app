@@ -24,8 +24,14 @@ class Speech:
     def save_audio(self):
       """Saves the converted text_to_speech audio"""
 
+      # SAFER: explicitly collect chunks into bytes
+      audio_chunks = []
+      for chunk in self.audio:
+         if isinstance(chunk, (bytes, bytearray)):
+            audio_chunks.append(chunk)
+
       # Collect chunks into a single bytes object
-      audio_bytes = b"".join(chunk for chunk in self.audio)
+      audio_bytes = b"".join(chunk for chunk in audio_chunks)
       # encode to base64
       encoded_audio = base64.b64encode(audio_bytes).decode("utf-8")
 
