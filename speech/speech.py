@@ -2,7 +2,6 @@ from dotenv import load_dotenv
 from elevenlabs.client import ElevenLabs
 from elevenlabs.play import play # Can also play the audio - follow Elevenlabs Doc
 import os
-from audioplayer import AudioPlayer
 
 load_dotenv()
 
