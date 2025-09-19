@@ -25,7 +25,7 @@ class Speech:
       """Saves the converted text_to_speech audio"""
 
       # Collect chunks into a single bytes object
-      audio_bytes = b"".join(self.audio)
+      audio_bytes = b"".join(chunk for chunk in self.audio)
       # encode to base64
       encoded_audio = base64.b64encode(audio_bytes).decode("utf-8")
 
