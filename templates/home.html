@@ -6,11 +6,13 @@
     <p class="mb-0 fs-4">"{{ verse_text }}"</p>
     <footer class="blockquote-footer mt-2">{{ verse_ref }}</footer>
     <!-- Audio player -->
-    {% if audio_path %}
+    {% if file_id %}
       <audio controls class="w-100 my-3">
-        <source src="{{ url_for('play_audio', path=audio_path) }}" type="audio/mpeg">
+        <source src="{{ url_for('play_audio', file_id=file_id) }}" type="audio/mpeg">
         Your browser does not support the audio element.
       </audio>
+    {% else %}
+      <p>No Audio file</p>
     {% endif %}
   </blockquote>
 
