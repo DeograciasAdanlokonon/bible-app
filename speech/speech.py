@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 from elevenlabs.client import ElevenLabs
 from elevenlabs.play import play # Can also play the audio - follow Elevenlabs Doc
 import os
-import base64
+import tempfile
 
 load_dotenv()
 
@@ -24,16 +24,11 @@ class Speech:
     def save_audio(self):
       """Saves the converted text_to_speech audio"""
 
-      # SAFER: explicitly collect chunks into bytes
-      audio_chunks = []
-      for chunk in self.audio:
-         if isinstance(chunk, (bytes, bytearray)):
-            audio_chunks.append(chunk)
+      # Create a temp file
+      temp_file = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3")
+      with open(temp_file.name, "wb") as f:
+        for chunk in self.audio:   # iterate generator
+            f.write(chunk)
 
-      # Collect chunks into a single bytes object
-      audio_bytes = b"".join(chunk for chunk in audio_chunks)
-      # encode to base64
-      encoded_audio = base64.b64encode(audio_bytes).decode("utf-8")
-
-      return encoded_audio
+      return temp_file.name
 

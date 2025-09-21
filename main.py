@@ -1,6 +1,6 @@
 from bible.bible import Bible
 from speech.speech import Speech
-from flask import Flask, render_template, redirect, url_for, send_from_directory, request, flash
+from flask import Flask, render_template, redirect, url_for, send_from_directory, request, flash, send_file
 from flask_bootstrap import Bootstrap5
 import re
 import os
@@ -31,11 +31,11 @@ def home():
 
     # ToDo: Run the speech object
     speech = Speech(text=verse_text)
-    audio_data = speech.save_audio()
+    audio_path = speech.save_audio()
   else:
     flash(bible.message, "warning")
 
-  return render_template('home.html', verse_text=verse_text, verse_ref=verse_reference, lang=lang, audio_data=f"data:audio/mp3;base64,{audio_data}")
+  return render_template('home.html', verse_text=verse_text, verse_ref=verse_reference, lang=lang, audio_path=audio_path)
 
 
 @app.route('/search', methods=['GET'])
@@ -57,14 +57,19 @@ def audio(ref, text):
   try:
     # ToDo: Run the speech object  
     speech = Speech(text=text)
-    audio_data = speech.save_audio()
+    audio_path = speech.save_audio()
     
-    return render_template('audio.html', ref=ref, text=text, audio_data=f"data:audio/mp3;base64,{audio_data}")
+    return render_template('audio.html', ref=ref, text=text, audio_path=audio_path)
   except Exception as e:
     flash("Sorry, Text to Speech failed!", "warning")
     redirect(url_for('search'))
 
   return render_template('audio.html', )
+
+@app.route("/play-audio/<path>")
+def play_audio(path):
+    """Serve the temporary audio file"""
+    return send_file(path, mimetype="audio/mpeg")
 
 if __name__ == "__main__":
   app.run(debug=True)
